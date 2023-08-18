@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
+// const crypto = require("crypto");
 
 const validateEmail = function (email: string) {
   var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -77,12 +77,12 @@ const adminSchema = new mongoose.Schema({
   },
 });
 
-adminSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-  next();
-});
+// adminSchema.pre("save", async function (next) {
+//   if (this.isModified("password")) {
+//     this.password = await bcrypt.hash(this.password, 10);
+//   }
+//   next();
+// });
 adminSchema.methods.matchPassword = async function (password:string) {
   return await bcrypt.compare(password, this.password);
 };

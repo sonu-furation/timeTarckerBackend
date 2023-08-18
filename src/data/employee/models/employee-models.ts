@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
+// const crypto = require("crypto");
 
 const validateEmail = function (email: string) {
   var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -125,12 +125,12 @@ const employeeSchema = new mongoose.Schema({
   resetPasswordExpire:Date
 });
 
-employeeSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-  next();
-});
+// employeeSchema.pre("save", async function (next) {
+//   if (this.isModified("password")) {
+//     this.password = await bcrypt.hash(this.password, 10);
+//   }
+//   next();
+// });
 employeeSchema.methods.matchPassword = async function (password: string) {
   return await bcrypt.compare(password, this.password);
 };
@@ -141,10 +141,10 @@ employeeSchema.methods.generateToken = function () {
 
 // generate the token for reset password
 employeeSchema.methods.getResetPasswordToken = function () {
-  const resetToken =  crypto.randomBytes(20).toString('hex');
-  this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+  // const resetToken =  crypto.randomBytes(20).toString('hex');
+  // this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
-  return resetToken
+  // return resetToken
 }
 
 
